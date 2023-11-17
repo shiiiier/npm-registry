@@ -20,6 +20,8 @@ const SearchComponent:  React.FC = () => {
 
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [noResults, setNoResults] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,12 +30,15 @@ const SearchComponent:  React.FC = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${searchTerm}&size=5`);
+    //   const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${searchTerm}&size=5`);
+      const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${searchTerm}`);
+      
 
       const results: SearchResult[] = response.data.objects;
 
       if (results.length > 0) {
         setSearchResults(results);
+        setCurrentPage(1); //Reset to the first page
         setNoResults(false);
       } else {
         setSearchResults([]);
@@ -46,7 +51,25 @@ const SearchComponent:  React.FC = () => {
       console.error('Error fetching search results', error);
     }
   };
+  
+  const handleLoadMore = async () => {
+    try {
+        const nextPage = currentPage + 1;
+        const response = await axios.get(
+            `https://registry.npmjs.org/-/v1/search?text=${searchTerm}&size=10&page=${nextPage}`
+        );
 
+        const newResults: SearchResult[] = response.data.objects;
+
+        if (newResults.length > 0) {
+            setSearchResults((prevResults) => [...prevResults, ...newResults]);
+            setCurrentPage(nextPage);
+        }
+    } catch (error) {
+      console.error('Error fetching more search results', error);
+        
+    }
+  }
   return (
     <div>
       <input
@@ -89,6 +112,8 @@ const SearchComponent:  React.FC = () => {
                 ))}
             </tbody>
         </table>
+
+        <button onClick={handleLoadMore}>Load More</button>
         </div>
       )}
     </div>
