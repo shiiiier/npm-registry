@@ -30,7 +30,7 @@ Before you begin, ensure you have the following installed on your machine:
 2. Change to the project directory:
 
    ```bash
-   cd npm-registry-web-app
+   cd npm-registry
 
 3. Install dependencies:
 
@@ -42,9 +42,9 @@ Before you begin, ensure you have the following installed on your machine:
 1. Start the development usage: 
 
    ```bash
-   npm start
+   npm start dev
 
-2. Open your browser and navigate to http://localhost:3000.
+2. Open your web browser and navigate to [http://localhost:5173](http://localhost:5173). If the port number is different, you can find the actual address in your terminal where the development server is running.
 
    You should now see the NPM Registry Web App. Use the search bar to look for packages, click on a package to view its details, and navigate back to the home page.
 
