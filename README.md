@@ -50,11 +50,11 @@ Before you begin, ensure you have the following installed on your machine:
 
 ### Dependencies
 
-   React
-   axios
-   react-router-dom
-   react-loader-spinner
-   bootstrap
+   - React
+   - axios
+   - react-router-dom
+   - react-loader-spinner
+   - bootstrap
    
    For a complete list of dependencies, please refer to the package.json file.
 
