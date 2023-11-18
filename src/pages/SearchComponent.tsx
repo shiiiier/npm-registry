@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import SearchResults from './SearchResults';
 
 interface Author {
     name: string;
@@ -30,10 +30,7 @@ const SearchComponent:  React.FC = () => {
 
   const handleSearch = async () => {
     try {
-    //   const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${searchTerm}&size=5`);
       const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${searchTerm}`);
-      
-
       const results: SearchResult[] = response.data.objects;
 
       if (results.length > 0) {
@@ -72,48 +69,27 @@ const SearchComponent:  React.FC = () => {
   }
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleSearch}>Search</button>
 
-      {noResults && <p>No results found</p>}
+        <div className='search-bar-container'>
+            <input 
+            className='btn searchBar'
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleInputChange}
+        />
+        <button onClick={handleSearch} className="btn btn-success">Search</button>
+        </div>
+
+        <div className='noResults'>
+          {noResults && <p>No results found</p>}
+        </div>
 
       {searchResults.length > 0 && (
-        <div>
-          {/* Render your search results here */}
+        <div className='appContainer'>
+          <SearchResults searchResults={searchResults} />
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Package Name</th>
-                    <th>Author</th>
-                    <th>Updated Date</th>
-                    <th>Action</th>
-
-                </tr>
-            </thead>
-
-            <tbody>
-                {searchResults.map((result) => (
-                    <tr key = {result.package.name}>
-                        <td>{result.package.name}</td>
-                        <td>{result.package.author?.name}</td>
-                        <td>{result.package.date}</td>
-                        <td>
-                            <Link to={`/details/${result.package.name}`}>
-                                <button>Details</button>
-                            </Link>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-
-        <button onClick={handleLoadMore}>Load More</button>
+        <button className='btn loadMore' onClick={handleLoadMore}>Load More</button>
         </div>
       )}
     </div>
